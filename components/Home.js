@@ -20,8 +20,8 @@ const Home = () => {
           proident minim Lorem quis sunt exercitation mollit.
         </p>
         <div>
-          <button>
-            View Work <HiArrowNarrowRight />
+          <button className="text-white group border-2 px-6 py-3 my-2 flex items-center hover:bg-pink-600 hover:border-pink-600">
+            View Work <HiArrowNarrowRight className="ml-3 group-hover:rotate-90 duration-300" />
           </button>
         </div>
       </div>

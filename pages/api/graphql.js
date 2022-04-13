@@ -5,6 +5,7 @@ const cors = Cors();
 const typeDefs = gql`
   type User {
     id: ID
+    name: String
   }
 
   type Query {
@@ -18,6 +19,7 @@ const resolvers = {
       await ctx.revalidate("/");
       return {
         id: "Foo",
+        name: "John Doe",
       };
     },
   },
@@ -27,7 +29,6 @@ const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req, res }) => {
-    console.log({ req, res });
     return {
       revalidate: res.unstable_revalidate,
     };
