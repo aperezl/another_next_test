@@ -1,11 +1,19 @@
 import { gql, ApolloServer } from "apollo-server-micro";
 import Cors from "micro-cors";
-import prisma from "../../lib/prisma";
+import postRepository from "../../repositories/posts";
 const cors = Cors();
 const typeDefs = gql`
   type User {
     id: ID
     name: String
+  }
+
+  type Posts {
+    id: ID!
+    title: String!
+    slug: String!
+    body: String!
+    published: Boolean!
   }
 
   input newPostParams {
@@ -15,8 +23,11 @@ const typeDefs = gql`
     published: Boolean!
   }
 
+ 
+
   type Query {
     getUser: User
+    getPosts: [Post]
   }
 
   type Mutation {
@@ -34,6 +45,9 @@ const resolvers = {
         name: "John Doe",
       };
     },
+    getPosts: async (_, __, ctx) => {
+      return ctx.postRepository.getPublishedPosts();
+    }
   },
   Mutation: {
     revalidate: async (_, { slug }, ctx) => {
@@ -43,15 +57,8 @@ const resolvers = {
       return true
     },
     createPost: async (_, { params }, ctx) => {
-      console.log({ params })
-      console.log(ctx.prisma.post)
-      const posts = await ctx.prisma.post.findMany()
-      console.log({ posts })
-      const newPost = await ctx.prisma.post.create({
-        data: params
-      })
-      console.log({ newPost })
-      return true
+      const newPost = await ctx.postRepository.createPost(params)
+      return newPost
 
     }
   }
@@ -63,7 +70,7 @@ const apolloServer = new ApolloServer({
   context: ({ req, res }) => {
     return {
       revalidate: res.unstable_revalidate,
-      prisma
+      postRepository: postRepository(),
     };
   },
 });
