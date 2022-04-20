@@ -22,7 +22,7 @@ curl --request POST \
 curl --request POST \
   --header 'content-type: application/json' \
   --url 'http://localhost:3000/api/graphql' \
-  --data '{"query":"mutation Mutation($slug: ID!) {revalidate(slug: $slug)}","variables":{"slug":"cuarto-post"},"operationName":"Mutation"}'
+  --data '{"query":"mutation Mutation($slug: ID!) {revalidate(slug: $slug)}","variables":{"slug":"segundo-post"},"operationName":"Mutation"}'
 
 ###
 
