@@ -8,7 +8,9 @@
     "app"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npm run dev --workspace=app",
+    "build": "npm run build --workspace=app",
+    "start:api": "npm run start --workspace=api"
   },
   "repository": {
     "type": "git",
