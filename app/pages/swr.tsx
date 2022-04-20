@@ -51,7 +51,7 @@ function Avatar ({ id }) {
   return <span>name: {user?.name}</span>
 }
 function Content () {
-  const { user, isLoading, isError } = useUser()
+  const { user, isLoading, isError } = useUser(null)
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error</div>
   return <h1>Welcome back, {user?.name}</h1>
