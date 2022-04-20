@@ -1,14 +1,14 @@
 import prisma from '../lib/prisma'
 
-export default function postRepository() {
+export default function postRepository () {
   return {
     getPublishedPosts: async () => {
       return await prisma.post.findMany({
         where: { published: true },
         include: {
           author: {
-            select: { name: true },
-          },
+            select: { name: true }
+          }
         }
       })
     },
@@ -17,8 +17,8 @@ export default function postRepository() {
         where: { published: false },
         include: {
           author: {
-            select: { name: true },
-          },
+            select: { name: true }
+          }
         }
       })
     },
@@ -27,8 +27,8 @@ export default function postRepository() {
         where: { slug },
         include: {
           author: {
-            select: { name: true },
-          },
+            select: { name: true }
+          }
         }
       })
     },
@@ -38,7 +38,7 @@ export default function postRepository() {
           title,
           slug,
           body,
-          published,
+          published
         }
       })
     }

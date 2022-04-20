@@ -4,7 +4,6 @@ import "prismjs/themes/prism-tomorrow.css"
 
 export default function Post({ post }) {
   
-  console.log({ p: post.code })
   const PostContent = getMDXComponent(post.code)
   return (
     <>
@@ -17,7 +16,6 @@ export default function Post({ post }) {
 export const getStaticProps = async ({ params }) => {
   const { slug } = params
   const post = await getPostBySlug(slug)
-  console.log(post.body)
   return {
     props: {
       post
