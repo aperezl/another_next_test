@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth from "next-auth"
 import GitHubProvider from "next-auth/providers/github";
 
 const authHandler = (req, res) => NextAuth(req, res, options);
