@@ -5,7 +5,8 @@
   "private": true,
   "main": "index.js",
   "workspaces": [
-    "app"
+    "app",
+    "api"
   ],
   "scripts": {
     "dev": "npm run dev --workspace=app",
