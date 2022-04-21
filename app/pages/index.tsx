@@ -1,4 +1,3 @@
-import { getPost } from '../lib/mdx'
 import Login from '../components/Login'
 import Link from 'next/link'
 import Header from '../components/Header'
@@ -24,6 +23,6 @@ export default function Home ({ posts }) {
 }
 
 export const getStaticProps = async () => {
-  const posts = await getPost()
+  const posts = []
   return { props: { posts }, revalidate: false }
 }
