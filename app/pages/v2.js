@@ -1,4 +1,5 @@
 import BlogHome from '../components/v2/BlogHome'
+import Footer from '../components/v2/Footer'
 import Hero from '../components/v2/Hero'
 import Navbar from '../components/v2/Navbar'
 import Post from '../components/v2/Post'
@@ -12,7 +13,7 @@ export default function v2 () {
         </div>
       </div>
 
-      <div className="bg-[#1a3f1d] z-0 pt-24">
+      <div className="bg-gradient-to-tr from-[#1a3f1d] to-[#2c682c] z-0 pt-24">
         <div className="max-w-screen-xl px-4 md:px-8 mx-auto">
           <Hero />
           
@@ -40,9 +41,13 @@ export default function v2 () {
       </div>
 
       <div className="bg-white py-6 sm:py-8 lg:py-12">
-        <div className="max-w-screen-md px-4 md:px-8 mx-auto">
+        <div className="max-w-screen-xl px-4 md:px-8 mx-auto">
           <Post />
         </div>
+      </div>
+
+      <div class="bg-white pt-4 sm:pt-10 lg:pt-12">
+        <Footer />
       </div>
     </>
     
