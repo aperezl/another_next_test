@@ -1,6 +1,6 @@
 import Post from '../models/Post'
 
-export default async function postMongoRepository({ db } = {}) {
+export default function postMongoRepository () {
   return {
     create: async post => {
       const savedPost = new Post(post)

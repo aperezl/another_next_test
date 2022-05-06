@@ -1,6 +1,6 @@
 import User from '../models/User'
 
-export default async function userMongoRepository({ db } = {}) {
+export default function userMongoRepository () {
   return {
     create: async user => {
       const savedUser = new User(user)

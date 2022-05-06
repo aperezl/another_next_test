@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { ApolloServer } from 'apollo-server'
-import schema from './graphql/schema'
+import makeSchema from './graphql/schema'
 import userMongoRepository from './repositories/userMongoRepository'
 import postMongoRepository from './repositories/postMongoRepository'
 
@@ -10,11 +10,11 @@ import authenticate from '../middlewares/auth'
 
 
 const startSever = async () => {
-  const db = await connectDB()
-  const userRepository = await userMongoRepository({ db })
-  const postRepository = await postMongoRepository({ db })
+  await connectDB()
+  const userRepository = userMongoRepository()
+  const postRepository = postMongoRepository()
   const server = new ApolloServer({
-    schema,
+    schema: makeSchema({ userRepository, postRepository }),
     context: ({ req }) => ({
       userRepository,
       postRepository,

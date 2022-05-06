@@ -1,29 +1,30 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
-import { users, user } from './queries'
-import { register, login, createPost } from './mutations'
+import { makeUser, makeUsers } from './queries'
+import { makeLogin, makeRegister, makecreatePost } from './mutations'
 
-const query = new GraphQLObjectType({
-  name: 'QueryType',
-  description: 'Query Type',
-  fields: {
-    users,
-    user
-  }
-})
+export default function makeSchema ({ userRepository, postRepository }) {
+  console.log({ userRepository })
+  const query = new GraphQLObjectType({
+    name: 'QueryType',
+    description: 'Query Type',
+    fields: {
+      users: makeUsers({ userRepository }),
+      user: makeUser({ userRepository })
+    }
+  })
 
+  const mutation = new GraphQLObjectType({
+    name: 'MutationType',
+    description: 'The root mutation type',
+    fields: {
+      register: makeRegister({ userRepository }),
+      login: makeLogin({ userRepository }),
+      createPost: makecreatePost({ postRepository })
+    }
+  })
 
-
-const mutation = new GraphQLObjectType({
-  name: 'MutationType',
-  description: 'The root mutation type',
-  fields: {
-    register,
-    login,
-    createPost
-  }
-})
-
-export default new GraphQLSchema({
-  query,
-  mutation
-})
+  return new GraphQLSchema({
+    query,
+    mutation
+  })
+}
