@@ -1,17 +1,17 @@
 import { GraphQLList, GraphQLString } from "graphql";
 import { User } from "./types";
 
-export const users = {
+export const makeUsers = ({ userRepository }) => ({
   type: new GraphQLList(User),
   description: 'List of users',
-  resolve: async (_, __, ctx) => await ctx.userRepository.findAll()
-}
+  resolve: async () => await userRepository.findAll()
+})
 
-export const user = {
+export const makeUser = ({ userRepository }) => ({
   type: User,
   description: 'Find a user by id',
   args: {
     id: { type: GraphQLString }
   },
-  resolve: async (_, { id }, ctx) => await ctx.userRepository.findById(id)
-}
+  resolve: async (_, { id }) => await userRepository.findById(id)
+})
