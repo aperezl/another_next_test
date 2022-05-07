@@ -1,4 +1,4 @@
-import { makeLogin } from './login'
+import { makeLoginController } from '../../controllers/auth/login'
 
 const makeCreateJWT = () => payload => 'validToken'
 const makeUserRepository = () => {
@@ -12,7 +12,7 @@ const makeUserRepository = () => {
 const makeSut = () => {
   const userRepository = makeUserRepository()
   const createJWT = makeCreateJWT()
-  const sut = makeLogin({ userRepository, createJWT})
+  const sut = makeLoginController({ userRepository, createJWT})
 
   return {
     sut,
@@ -24,19 +24,19 @@ const makeSut = () => {
 describe('login', () => {
   test('should return a valid token when email and password is valid', async () => {
     const { sut } = makeSut()
-    const result = await sut.resolve({}, { email: 'valid@email.com', password: 'validPassword' })
+    const result = await sut({ email: 'valid@email.com', password: 'validPassword' })
     expect(result).toBe('validToken')
   })
 
   test('should return a throw when email is invalid', async () => {
     const { sut } = makeSut()
-    const promise = sut.resolve({}, { email: 'invalid@email.com', password: 'validPassword' })
+    const promise = sut({ email: 'invalid@email.com', password: 'validPassword' })
     await expect(promise).rejects.toThrow('Invalid email or password')
   })
 
   test('should return a throw when password is invalid', async () => {
     const { sut } = makeSut()
-    const promise = sut.resolve({}, { email: 'valid@email.com', password: 'invalidPassword' })
+    const promise = sut({ email: 'valid@email.com', password: 'invalidPassword' })
     await expect(promise).rejects.toThrow('Invalid email or password')
   })
 })

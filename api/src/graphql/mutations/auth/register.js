@@ -1,7 +1,7 @@
 import { GraphQLString } from "graphql";
 import { validator } from '../../../util/validator'
 
-export const makeRegister = ({ userRepository, createJWT }) => ({
+export const makeRegister = ({ registerController }) => ({
   type: GraphQLString,
   description: 'Register a new user',
   args: {
@@ -10,17 +10,5 @@ export const makeRegister = ({ userRepository, createJWT }) => ({
     password: { type: GraphQLString },
     displayName: { type: GraphQLString }
   },
-  resolve: async (_, args) => {
-    const requiredFields = ['username', 'email', 'password', 'displayName']
-    if (!validator(requiredFields, args)) {
-      throw new Error('Bad Request')
-    }
-    const user = await userRepository.create(args)
-    const token = createJWT({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-    })
-    return token
-  }
+  resolve: async (_, args) => await registerController(args)
 })

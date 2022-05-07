@@ -1,6 +1,8 @@
-import { makeRegister } from './register'
+import { makeRegisterController } from '../../controllers/auth/register'
+import { validator } from '../../util/validator'
 
 const makeCreateJWT = () => payload => 'validToken'
+const makeValidator = () => validator
 const makeUserRepository = () => {
   const mails = [{ email: 'valid@email.com', password: 'validPassword' }]
   return {
@@ -18,7 +20,8 @@ const makeFakeUser = () => ({
 const makeSut = () => {
   const userRepository = makeUserRepository()
   const createJWT = makeCreateJWT()
-  const sut = makeRegister({ userRepository, createJWT})
+  const validator = makeValidator()
+  const sut = makeRegisterController({ userRepository, createJWT, validator})
 
   return {
     sut,
@@ -31,7 +34,7 @@ describe('register', () => {
   test('shold return a valid token when user payload are valid', async () => {
     const { sut } = makeSut()
     const fakeUser = makeFakeUser()
-    const result = await sut.resolve({}, fakeUser)
+    const result = await sut(fakeUser)
     expect(result).toBe('validToken')
   })
 
@@ -39,7 +42,7 @@ describe('register', () => {
     const { sut } = makeSut()
     const fakeUser = makeFakeUser()
     delete fakeUser.username
-    const promise = sut.resolve({}, fakeUser)
+    const promise = sut(fakeUser)
     await expect(promise).rejects.toThrow('Bad Request')
   })
 
@@ -47,7 +50,7 @@ describe('register', () => {
     const { sut } = makeSut()
     const fakeUser = makeFakeUser()
     delete fakeUser.email
-    const promise = sut.resolve({}, fakeUser)
+    const promise = sut(fakeUser)
     await expect(promise).rejects.toThrow('Bad Request')
   })
 
@@ -55,7 +58,7 @@ describe('register', () => {
     const { sut } = makeSut()
     const fakeUser = makeFakeUser()
     delete fakeUser.password
-    const promise = sut.resolve({}, fakeUser)
+    const promise = sut(fakeUser)
     await expect(promise).rejects.toThrow('Bad Request')
   })
 
@@ -63,7 +66,7 @@ describe('register', () => {
     const { sut } = makeSut()
     const fakeUser = makeFakeUser()
     delete fakeUser.displayName
-    const promise = sut.resolve({}, fakeUser)
+    const promise = sut(fakeUser)
     await expect(promise).rejects.toThrow('Bad Request')
   })
 
