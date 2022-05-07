@@ -27,7 +27,7 @@ const createPostController = makeCreatePostController({ postRepository })
 const getUsersController = makeGetUsersController({ userRepository })
 const getUserController = makeGetUserController({ userRepository })
 
-export default function makeSchema ({ userRepository, postRepository }) {
+export default function makeSchema () {
   const query = new GraphQLObjectType({
     name: 'QueryType',
     description: 'Query Type',

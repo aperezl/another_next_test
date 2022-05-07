@@ -1,5 +1,5 @@
 import { GraphQLString } from "graphql";
-import { Post } from '../../types'
+import { User, Post } from '../../types'
 
 export const makeCreatePost = ({ createPostController }) => ({
   type: Post,
