@@ -1,4 +1,4 @@
-import { makeRegisterController } from '../../controllers/auth/register'
+import { makeRegisterController } from '../../controllers/auth/registerController'
 import { validator } from '../../util/validator'
 
 const makeCreateJWT = () => payload => 'validToken'

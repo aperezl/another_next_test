@@ -1,4 +1,4 @@
-import { makeLoginController } from '../../controllers/auth/login'
+import { makeLoginController } from '../../controllers/auth/loginController'
 
 const makeCreateJWT = () => payload => 'validToken'
 const makeUserRepository = () => {
