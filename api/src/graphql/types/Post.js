@@ -1,15 +1,5 @@
-import { GraphQLObjectType, GraphQLString, GraphQLID } from "graphql";
-
-export const User = new GraphQLObjectType({
-  name: 'User',
-  description: 'User Type',
-  fields: {
-    id: { type: GraphQLID },
-    username: { type: GraphQLString },
-    email: { type: GraphQLString },
-    displayName: { type: GraphQLString }
-  },
-})
+import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql'
+import { User } from './User'
 
 export const Post = new GraphQLObjectType({
   name: 'Post',
