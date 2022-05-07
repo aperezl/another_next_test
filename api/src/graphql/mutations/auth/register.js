@@ -1,5 +1,4 @@
 import { GraphQLString } from "graphql";
-import { validator } from '../../../util/validator'
 
 export const makeRegister = ({ registerController }) => ({
   type: GraphQLString,
