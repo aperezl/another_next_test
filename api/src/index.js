@@ -5,7 +5,7 @@ import userMongoRepository from './repositories/userMongoRepository'
 import postMongoRepository from './repositories/postMongoRepository'
 
 import { connectDB }  from './db/mongodb'
-import authenticate from '../middlewares/auth'
+import authenticate from './middlewares/auth'
 
 
 
