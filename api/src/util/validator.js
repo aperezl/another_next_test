@@ -1,0 +1,1 @@
+export const validator = (arrFields, obj) => arrFields.every(field => obj[field])

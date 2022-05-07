@@ -1,6 +1,8 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
-import { makeUser, makeUsers } from './queries'
-import { makeLogin, makeRegister, makecreatePost } from './mutations'
+import { makeUser, makeUsers } from './queries/user'
+import { makeLogin, makeRegister } from './mutations/auth'
+import { makecreatePost } from './mutations/postMutations'
+import { createJWT } from '../util/auth'
 
 export default function makeSchema ({ userRepository, postRepository }) {
   console.log({ userRepository })
@@ -17,8 +19,8 @@ export default function makeSchema ({ userRepository, postRepository }) {
     name: 'MutationType',
     description: 'The root mutation type',
     fields: {
-      register: makeRegister({ userRepository }),
-      login: makeLogin({ userRepository }),
+      register: makeRegister({ userRepository, createJWT }),
+      login: makeLogin({ userRepository, createJWT }),
       createPost: makecreatePost({ postRepository })
     }
   })
