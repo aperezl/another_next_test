@@ -1,7 +1,7 @@
 import { GraphQLString } from "graphql";
-import { Post } from "../types";
+import { Post } from '../../types'
 
-export const makecreatePost = ({ postRepository }) => ({
+export const makeCreatePost = ({ postRepository }) => ({
   type: Post,
   description: 'Create a new post',
   args: {

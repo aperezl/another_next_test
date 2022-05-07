@@ -1,11 +1,10 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
 import { makeUser, makeUsers } from './queries/user'
 import { makeLogin, makeRegister } from './mutations/auth'
-import { makecreatePost } from './mutations/postMutations'
+import { makeCreatePost } from './mutations/post'
 import { createJWT } from '../util/auth'
 
 export default function makeSchema ({ userRepository, postRepository }) {
-  console.log({ userRepository })
   const query = new GraphQLObjectType({
     name: 'QueryType',
     description: 'Query Type',
@@ -21,7 +20,7 @@ export default function makeSchema ({ userRepository, postRepository }) {
     fields: {
       register: makeRegister({ userRepository, createJWT }),
       login: makeLogin({ userRepository, createJWT }),
-      createPost: makecreatePost({ postRepository })
+      createPost: makeCreatePost({ postRepository })
     }
   })
 
