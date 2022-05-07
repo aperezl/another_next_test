@@ -14,6 +14,7 @@ import postMongoRepository from '../repositories/postMongoRepository'
 // Controllers
 import { makeLoginController, makeRegisterController } from '../controllers/auth'
 import { makeCreatePostController } from '../controllers/post'
+import { makeGetUsersController, makeGetUserController } from '../controllers/user'
 
 // Compose LoginController
 const userRepository = userMongoRepository()
@@ -23,13 +24,16 @@ const postRepository = postMongoRepository()
 const loginController = makeLoginController({ userRepository, createJWT })
 const registerController = makeRegisterController({ userRepository, createJWT, validator})
 const createPostController = makeCreatePostController({ postRepository })
+const getUsersController = makeGetUsersController({ userRepository })
+const getUserController = makeGetUserController({ userRepository })
+
 export default function makeSchema ({ userRepository, postRepository }) {
   const query = new GraphQLObjectType({
     name: 'QueryType',
     description: 'Query Type',
     fields: {
-      users: makeUsers({ userRepository }),
-      user: makeUser({ userRepository })
+      users: makeUsers({ getUsersController }),
+      user: makeUser({ getUserController })
     }
   })
 

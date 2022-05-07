@@ -1,17 +1,17 @@
-import { GraphQLList, GraphQLString } from "graphql";
-import { User } from "../types";
+import { GraphQLList, GraphQLString } from 'graphql'
+import { User } from '../../types'
 
-export const makeUsers = ({ userRepository }) => ({
+export const makeUsers = ({ getUsersController }) => ({
   type: new GraphQLList(User),
   description: 'List of users',
-  resolve: async () => await userRepository.findAll()
+  resolve: getUsersController
 })
 
-export const makeUser = ({ userRepository }) => ({
+export const makeUser = ({ getUserController }) => ({
   type: User,
   description: 'Find a user by id',
   args: {
     id: { type: GraphQLString }
   },
-  resolve: async (_, { id }) => await userRepository.findById(id)
+  resolve: async (_, { id }) => await getUserController(id)
 })
