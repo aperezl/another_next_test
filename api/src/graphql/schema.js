@@ -1,11 +1,6 @@
-import { GraphQLObjectType, GraphQLSchema } from 'graphql'
-import { makeUser, makeUsers } from './queries/user'
-import { makeLogin, makeRegister } from './mutations/auth'
-import { makeCreatePost } from './mutations/post'
-import { createJWT } from '../util/auth'
-
 // Utils
 import { validator } from '../util/validator'
+import { createJWT } from '../util/auth'
 
 // Repositories
 import userMongoRepository from '../repositories/userMongoRepository'
@@ -28,74 +23,23 @@ const getUsersController = makeGetUsersController({ userRepository })
 const getUserController = makeGetUserController({ userRepository })
 
 // types (to delete)
-import { User, Post } from './types'
-import { gql } from 'apollo-server-express'
+import { Post, Role, User } from './typeDefs'
+import { makeLoginMutation } from './mutations/auth/login'
+import { makeRegisterMutation } from './mutations/auth/register'
+import { makeCreatePostMutation } from './mutations/post/create'
+import { makeUserQuery, makeUsersQuery } from './queries/user'
 
-export default function makeSchema () {
-  const query = new GraphQLObjectType({
-    name: 'QueryType',
-    description: 'Query Type',
-    fields: {
-      users: makeUsers({ getUsersController }),
-      user: makeUser({ getUserController })
-    }
-  })
-
-  const mutation = new GraphQLObjectType({
-    name: 'MutationType',
-    description: 'The root mutation type',
-    fields: {
-      register: makeRegister({ registerController }),
-      login: makeLogin({ loginController }),
-      createPost: makeCreatePost({ createPostController }),
-      
-    },
-  })
-
-
-  ////////
-
-  const typeDefs = gql`
-    type Post {
-      id: ID!
-      title: String!
-      body: String!
-      author: User
-    }
-
-    type User {
-      id: ID!
-      username: String!
-      email: String!
-      password: String!
-      displayName: String!
-      posts: [Post]
-    }
-
-    type Query {
-      users: [User]
-      user(id: ID): User
-    }
-
-    type Mutation {
-      register(username: String, password: String, email: String, displayName: String): String
-      login(email: String, password: String): String
-      createPost(title: String, body: String): Post
-    }
-  `
+export default function makeSchema () { 
 
   const resolvers = {
     Query: {
-      users: async () => await getUsersController(),
-      user: async (_, { id }) => await getUserController(id)
+      users: makeUsersQuery({ getUsersController}),
+      user: makeUserQuery({ getUserController })
     },
     Mutation: {
-      login: async (_, { email, password }) => await loginController({ email, password }),
-      register: async (_, args) => await registerController(args),
-      createPost: async (_, { title, body }, { auth }) => {
-        const authorId = auth.user._id
-        return await createPostController({ title, authorId, body })
-      }
+      login: makeLoginMutation({ loginController }),
+      register: makeRegisterMutation({ registerController }),
+      createPost: makeCreatePostMutation({ createPostController })
     },
     Post: {
       author: async ({ authorId }) => {
@@ -107,12 +51,8 @@ export default function makeSchema () {
   }
 
   return {
-    typeDefs,
+    typeDefs: [Post, User, Role],
     resolvers
   }
 
-  return new GraphQLSchema({
-    query,
-    mutation
-  })
 }
