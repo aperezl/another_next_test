@@ -11,7 +11,7 @@ export const Post = new GraphQLObjectType({
     author: {
       type: User,
       resolve: ({ authorId }, _, { userRepository }) => {
-        return userRepository.findById(authorId)
+        console.log('in type')
       }
     }
   }
