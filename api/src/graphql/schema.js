@@ -1,11 +1,6 @@
-import { GraphQLObjectType, GraphQLSchema } from 'graphql'
-import { makeUser, makeUsers } from './queries/user'
-import { makeLogin, makeRegister } from './mutations/auth'
-import { makeCreatePost } from './mutations/post'
-import { createJWT } from '../util/auth'
-
 // Utils
 import { validator } from '../util/validator'
+import { createJWT } from '../util/auth'
 
 // Repositories
 import userMongoRepository from '../repositories/userMongoRepository'
@@ -27,28 +22,37 @@ const createPostController = makeCreatePostController({ postRepository })
 const getUsersController = makeGetUsersController({ userRepository })
 const getUserController = makeGetUserController({ userRepository })
 
-export default function makeSchema () {
-  const query = new GraphQLObjectType({
-    name: 'QueryType',
-    description: 'Query Type',
-    fields: {
-      users: makeUsers({ getUsersController }),
-      user: makeUser({ getUserController })
-    }
-  })
+// types (to delete)
+import { Post, Role, User } from './typeDefs'
+import { makeLoginMutation } from './mutations/auth/login'
+import { makeRegisterMutation } from './mutations/auth/register'
+import { makeCreatePostMutation } from './mutations/post/create'
+import { makeUserQuery, makeUsersQuery } from './queries/user'
 
-  const mutation = new GraphQLObjectType({
-    name: 'MutationType',
-    description: 'The root mutation type',
-    fields: {
-      register: makeRegister({ registerController }),
-      login: makeLogin({ loginController }),
-      createPost: makeCreatePost({ createPostController })
-    }
-  })
+export default function makeSchema () { 
 
-  return new GraphQLSchema({
-    query,
-    mutation
-  })
+  const resolvers = {
+    Query: {
+      users: makeUsersQuery({ getUsersController}),
+      user: makeUserQuery({ getUserController })
+    },
+    Mutation: {
+      login: makeLoginMutation({ loginController }),
+      register: makeRegisterMutation({ registerController }),
+      createPost: makeCreatePostMutation({ createPostController })
+    },
+    Post: {
+      author: async ({ authorId }) => {
+        const user = await getUserController(authorId)
+        console.log({ user, authorId })
+        return user
+      }
+    }
+  }
+
+  return {
+    typeDefs: [Post, User, Role],
+    resolvers
+  }
+
 }
